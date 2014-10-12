@@ -155,6 +155,7 @@ var notify = function(title, subtitle, body) {
 
 
         var whatever = function() {
+            console.log("whatever");
             if (recentDrinks >= 7) {
                 Settings.data('drinks', 0);
                 setTimeout(function() {
@@ -178,11 +179,14 @@ var notify = function(title, subtitle, body) {
                     });
                 }, 3000);   
             } else {
+                console.log("test");
                 setTimeout(function() {
+                    console.log("k");
                     card.hide();
                 }, 3000);
             }
         };
+        console.log("wat");
         ajax({
             url: mainURL + '/drink',
             method: 'POST',
