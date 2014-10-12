@@ -1,0 +1,12 @@
+body {
+	#gradient.horizontal(#ff0048;#ffffff;0%;100%);
+	padding: 40px 15px;
+	text-align: center;
+	background-color: #ff0048;
+	color: #ffffff;
+}
+
+h1 {
+	font-family: "Pacifico";
+	font-size: 72px;
+}
