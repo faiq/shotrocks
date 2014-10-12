@@ -4,11 +4,11 @@
         "items": [
             {
                 "title": "Normal Beer",
-                "subtitle": "5"
+                "subtitle": 5
             },
             {
                 "title": "Heavy Beer",
-                "subtitle": "9"
+                "subtitle": 9
             }
         ]
     },
@@ -17,23 +17,23 @@
         "items": [
             {
                 "title": "Vodka (Shot)",
-                "subtitle": "40"
+                "subtitle": 40
             },
             {
                 "title": "Tequila (Shot)",
-                "subtitle": "40"
+                "subtitle": 40
             },
             {
                 "title": "Whiskey (Shot)",
-                "subtitle": "43"
+                "subtitle": 43
             },
             {
                 "title": "Gin (Shot)",
-                "subtitle": "40"
+                "subtitle": 40
             },
             {
                 "title": "Rum (Shot)",
-                "subtitle": "41"
+                "subtitle": 41
             }
         ]
     },
@@ -42,27 +42,27 @@
         "items": [
             {
                 "title": "White Wine (Glass)",
-                "subtitle": "10"
+                "subtitle": 10
             },
             {
                 "title": "Red Wine (Glass)",
-                "subtitle": "15"
+                "subtitle": 15
             },
             {
                 "title": "Pinot Grito (Glass)",
-                "subtitle": "13"
+                "subtitle": 13
             },
             {
                 "title": "Sake (Vase)",
-                "subtitle": "16"
+                "subtitle": 16
             },
             {
                 "title": "Chardonnay (Glass)",
-                "subtitle": "14"
+                "subtitle": 14
             },
             {
                 "title": "Port (Glass)",
-                "subtitle": "19"
+                "subtitle": 19
             }
         ]
     }

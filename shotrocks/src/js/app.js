@@ -9,9 +9,7 @@ var ajax = require('ajax');
 var Settings = require('settings');
 // var Vector2 = require('vector2');
 
-setInterval(function() {
-    console.log("test...");
-}, 1000);
+
 
 // if isLoggedIn is set, do nothing, else, set to false
 var isLoggedIn = Settings.data('isLoggedIn');
@@ -21,8 +19,30 @@ if (isLoggedIn === null || isLoggedIn === undefined) {
 
 }
 
-function drinkAlert(title, text) {
-    Pebble.showSimpleNotificationOnPebble(title, text);
+var FEMALE_WATER_WEIGHT = 0.49;
+var FEMALE_METABOLISM = 0.017;
+var MALE_WATER_WEIGHT = 0.58;
+var MALE_METABOLISM = 0.015;
+
+var LBS_TO_KG = 0.453592;
+
+function BACAt(drinks, t, gender, weight) {
+    // function of time (in decimal hours) that returns BAC level based on drinks in database
+    // via http://en.wikipedia.org/wiki/Blood_alcohol_content
+    console.log(drinks, (t/1000)/3600, gender, weight);
+    var bac = ((0.806 * drinks * 1.2) / ((gender?MALE_WATER_WEIGHT:FEMALE_WATER_WEIGHT) * weight*LBS_TO_KG)) -
+        ((gender?MALE_METABOLISM:FEMALE_METABOLISM) * (t/1000)/3600);
+
+    bac = bac < 0 ? 0 : bac;
+    return bac;
+}
+
+function tForBAC(bac) {
+
+    // lose 0.015 BAC per hour
+    var hours = bac/0.015;
+    return hours;
+
 }
 
 var loadingCard = new UI.Card();
@@ -38,10 +58,80 @@ var notify = function(title, subtitle, body) {
     return card;
 };
 
-ajax({
-    url: 'http://matt.cond.in/hackru/drinks.json',
-    type: 'json'
-}, function(data) {
+// ajax({
+//     url: 'http://matt.cond.in/hackru/drinks.json',
+//     type: 'json'
+// }, function(data) {
+
+    var data = [
+    {
+        "title": "Beers",
+        "items": [
+            {
+                "title": "Normal Beer",
+                "subtitle": 5
+            },
+            {
+                "title": "Heavy Beer",
+                "subtitle": 9
+            }
+        ]
+    },
+    {
+        "title": "Hard Liquors",
+        "items": [
+            {
+                "title": "Vodka (Shot)",
+                "subtitle": 40
+            },
+            {
+                "title": "Tequila (Shot)",
+                "subtitle": 40
+            },
+            {
+                "title": "Whiskey (Shot)",
+                "subtitle": 43
+            },
+            {
+                "title": "Gin (Shot)",
+                "subtitle": 40
+            },
+            {
+                "title": "Rum (Shot)",
+                "subtitle": 41
+            }
+        ]
+    },
+    {
+        "title": "Wines",
+        "items": [
+            {
+                "title": "White Wine (Glass)",
+                "subtitle": 10
+            },
+            {
+                "title": "Red Wine (Glass)",
+                "subtitle": 15
+            },
+            {
+                "title": "Pinot Grito (Glass)",
+                "subtitle": 13
+            },
+            {
+                "title": "Sake (Vase)",
+                "subtitle": 16
+            },
+            {
+                "title": "Chardonnay (Glass)",
+                "subtitle": 14
+            },
+            {
+                "title": "Port (Glass)",
+                "subtitle": 19
+            }
+        ]
+    }
+];
 
     var main = new UI.Menu({
         sections: data
@@ -50,39 +140,44 @@ ajax({
     main.show();
     loadingCard.hide();
 
-    main.on('select', function(e) {
-        var recentDrinks = Settings.data('drinks') || [];
-        recentDrinks.push(e.item.title);
-        Settings.data('drinks', recentDrinks);
-        console.log(recentDrinks);
+    console.log("test", Settings.data('recentDrinks'));
 
-        var card = notify('Logging Drink', e.item.title, e.item.subtitle);
+    main.on('select', function(e) {
+        var recentDrinks = Settings.data('drinks') || 0;
+        recentDrinks += 1;
+        Settings.data('drinks', recentDrinks);
+
+        var bac = BACAt(recentDrinks, (new Date()).getTime() - Settings.data('startTime'), Settings.data('gender'), Settings.data('weight'));
+        var timeTilSober = tForBAC(bac);
+        var card = notify('Logging Drink', e.item.title, 'Your current BAC Level is: ' + bac.toFixed(3).toString() + '% and it will take you ' + timeTilSober.toFixed(1).toString() + ' hours to be totally sober.');
         main.hide();
-        // @TODO(Shrugs) make this actually programatically close window instead of crashing app
+
+
+
         ajax({
             url: 'http://google.com',
             method: 'POST',
             data: {
                 drinkId: e.item.title,
-                userId: Settings.data('userId')
+                email: Settings.data('email')
             }
         }, function() {
-            card.hide();
             setTimeout(function() {
-                drinkAlert("yo", "yo");
-
-            }, 2000);
+                card.hide();
+            }, 4000);
         }, function() {
-            card.hide();
+            setTimeout(function() {
+                card.hide();
+            }, 4000);
         })
         
     });
 
-}, function(err) {
-    // whelp, just give up, I guess
-    notify('Failed to load drinks.', 'I don\'t even know, dude.');
-    console.log('whelp.' + err);
-});
+// }, function(err) {
+//     // whelp, just give up, I guess
+//     notify('Failed to load drinks.', 'I don\'t even know, dude.');
+//     console.log('whelp.' + err);
+// });
 
 
 Settings.config({
@@ -93,6 +188,14 @@ Settings.config({
 }, function(e) {
     // close
     console.log(JSON.stringify(e.options));
-    Settings.data('userId', e.options.id);
+    if (!Settings.data('isLoggedIn')) {
+        // first use, therefore data
+        Settings.data('weight', e.options.weight || 220);
+        Settings.data('gender', e.options.gender || true);
+        Settings.data('email', e.options.id || 1);
+    } else {
+        Settings.data('startTime', (new Date()).getTime());
+        Settings.data('recentDrinks', 0);
+    }
     Settings.data('isLoggedIn', true);
 });
