@@ -20,6 +20,7 @@
    <script>
     $(function() {
       $( "#slider" ).slider({
+        orientation: 'vertical',
         value:100,
         min: 0,
         max: 500,
@@ -37,7 +38,16 @@
 		<div class="container">
 			<h1>ShotRocks</h1>
 			<form role="form">
-		    <div id="slider"></div>	
+		    <div class="container">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <!-- words -->
+                    </div>      
+                    <div class="col-xs-4">
+                        <div id="slider"></div>
+                    </div>
+                </div>
+            </div>	
       </form>	
 		</div>
 	</body>

@@ -200,9 +200,9 @@ var notify = function(title, subtitle, body) {
 //     console.log('whelp.' + err);
 // });
 
-
+console.log(Settings.data('isLoggedIn'));
 Settings.config({
-    url: mainURL + (isLoggedIn ? '/register' : '/settings')
+    url: mainURL + (Settings.data('isLoggedIn') ? '/register' : '/settings')
 }, function(e) {
     //open
     console.log('open');
