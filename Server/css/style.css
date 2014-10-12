@@ -1,5 +1,4 @@
-body {
-	#gradient.horizontal(#ff0048;#ffffff;0%;100%);
+body {	
 	padding: 40px 15px;
 	text-align: center;
 	background-color: #ff0048;
@@ -10,3 +9,8 @@ h1 {
 	font-family: "Pacifico";
 	font-size: 72px;
 }
+
+button {
+	margin-left: 20px;
+}
+
