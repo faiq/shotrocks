@@ -202,7 +202,7 @@ var notify = function(title, subtitle, body) {
 
 console.log(Settings.data('isLoggedIn'));
 Settings.config({
-    url: mainURL + (Settings.data('isLoggedIn') ? '/register' : '/settings')
+    url: mainURL + (Settings.data('isLoggedIn') ? '/settings' : '/register')
 }, function(e) {
     //open
     console.log('open');
