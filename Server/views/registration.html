@@ -1,0 +1,56 @@
+<DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>Welcome to ShotRocks!</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		
+		<link rel="stylesheet" href="../css/style.css">
+
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>	
+
+		<script>
+			window.onload = function () {
+				document.getElementById("register").onclick = function() { 
+					
+					});
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<h2>Registration</h2>
+			<p class="lead">All fields are required.</p>
+
+			<form name="input" action"/register" method="POST" role="form">
+				<div class="form-group">
+					<label for="inputEmail">Email address</label>
+					<input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+				</div>
+				<div class="form-group">
+					<label for="inputPassword">Password</label>
+					<input type="password" class="form-control" id="inputPassword" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label for="inputAge">Age</label>
+					<input class="form-control" id="inputAge" placeholder="Age">
+				</div>
+				<div class="form-group">
+					<label for="inputWeight">Weight (in lbs)</label>
+					<input class="form-control" id="inputWeight" placeholder="Weight">
+				</div>
+				<div class="form-group">
+					<label for="inputHeight">Height (in inches)</label>
+					<input class="form-control" id="inputHeight" placeholder="Height">
+				</div>
+			</form>
+			
+			<button type="button" id="register" class="btn btn-default btn-lg">Register</button>
+		</div>
+	</body>
+</html>

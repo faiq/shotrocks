@@ -1,0 +1,29 @@
+body {	
+	padding: 40px 15px;
+	text-align: center;
+	background-color: #ff0048;
+	color: #ffffff;
+}
+
+h1 {
+	font-family: "Pacifico";
+	font-size: 72px;
+}
+
+h2 {
+	font-size: 54px;
+}
+
+button {
+	margin-left: 20px;
+}
+
+a {
+	padding: 15px;
+	font-size: 16px;
+	color: #dddddd;
+}
+
+a:hover {
+	color: #dddddd;
+}
