@@ -30,27 +30,32 @@
 			<form name="input" action"/register" method="POST" role="form">
 				<div class="form-group">
 					<label for="inputEmail">Email address</label>
-					<input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+					<input name='email' type="email" class="form-control" id="inputEmail" placeholder="Enter email">
 				</div>
 				<div class="form-group">
 					<label for="inputPassword">Password</label>
-					<input type="password" class="form-control" id="inputPassword" placeholder="Password">
+					<input name='password' type="password" class="form-control" id="inputPassword" placeholder="Password">
 				</div>
+
+				<div class="form-group">
+					<label for="inputPassword">Confirm Password</label>
+					<input name='confirmPassword' type="password" class="form-control" id="inputPassword" placeholder="Password">
+				</div>
+
 				<div class="form-group">
 					<label for="inputAge">Age</label>
-					<input class="form-control" id="inputAge" placeholder="Age">
+					<input name='age' class="form-control" id="inputAge" placeholder="Age">
 				</div>
 				<div class="form-group">
 					<label for="inputWeight">Weight (in lbs)</label>
-					<input class="form-control" id="inputWeight" placeholder="Weight">
+					<input name='weight' class="form-control" id="inputWeight" placeholder="Weight">
 				</div>
 				<div class="form-group">
 					<label for="inputHeight">Height (in inches)</label>
-					<input class="form-control" id="inputHeight" placeholder="Height">
+					<input name='height' class="form-control" id="inputHeight" placeholder="Height">
 				</div>
+			  <button type="submit" id="register" class="btn btn-default btn-lg">Register</button>
 			</form>
-			
-			<button type="button" id="register" class="btn btn-default btn-lg">Register</button>
 		</div>
 	</body>
 </html>

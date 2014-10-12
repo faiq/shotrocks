@@ -12,16 +12,6 @@
 
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>	
 
-		<script>
-			window.onload = function () {
-				document.getElementById("signIn").onclick = function() {
-					alert("signin") 
-				}
-				document.getElementById("register").onclick = function() {
-					alert("register")
-				}
-			}
-		</script>
 	</head>
 
 	<body>
@@ -29,24 +19,24 @@
 			<h1>ShotRocks</h1>
 			<p class="lead">Welcome to ShotRocks, a Pebble app for managing your alcohol intake.</p>
 
-			<form role="form">
+			<form action="/signin" method="POST" role="form">
 				<div class="form-group">
 					<label for="inputEmail">Email address</label>
-					<input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+					<input name="email" type="email" class="form-control" id="inputEmail" placeholder="Enter email">
 				</div>
 				<div class="form-group">
 					<label for="inputPassword">Password</label>
-					<input type="password" class="form-control" id="inputPassword" placeholder="Password">
+					<input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
 				</div>
 				<div class="checkbox">
 					<label>
 						<input type="checkbox">Remember me
 					</label>
 				</div>
+			  <button type="submit" id="signIn" class="btn btn-default btn-lg">Sign in</button>
 			</form>
-			<button type="button" id="signIn" class="btn btn-default btn-lg">Sign in</button>
 			
-			<a href="registration.html">Register</a>
+			<a href="/register">Register</a>
 		</div>
 	</body>
 </html>

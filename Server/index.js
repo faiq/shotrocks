@@ -5,11 +5,12 @@ var express = require('express')
   , session = require('express-session')
   , path = require('path')
   , http = require('http')
-  , User = require('./App/Models/User')
+  , User = require('./Models/User')
   , app = express()
   , server = http.createServer(app) 
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(cookieParser())
 app.use(bodyParser.json())  
 app.use(bodyParser.urlencoded())
@@ -20,57 +21,96 @@ app.use(session({
 
 mongoose.connect('mongodb://localhost/shotrocks')
 var db = mongoose.connection
-  , db.on('error', console.error.bind(console, 'connection error:'))
+db.on('error', console.error.bind(console, 'connection error:'))
 
 app.get('/', function (req, res) {
   if (req.session.email) {   
     User.findOne({email: req.session.email}, function (err, user) {
-      if (err) 
-        res.status(401).send({ err: "no credentials"})   
-      res.render('index ' , {user: user.email }) 
+      if (err) {  res.status(401).send({ err: "no credentials"})   
+        console.log(err) 
+      } 
+      res.sendFile(path.join(__dirname, '/views/drink.html'))
     }) 
   } 
-  res.render('index ' , {user: user.email }) 
+  res.sendFile(path.join(__dirname, '/views/login.html'))
 }) 
+
+app.post('/signin', function (req, res) {
+  User.findOne({email: req.body.email}, function (err, user) {
+      if (err) {  
+        res.status(401).send({ err: "wrong credentials"})   
+        console.log(err) 
+      }   
+      if (!user) res.status(401).send({ err: "wrong credentials"})   
+      
+      if (user.validPassword(req.body.password)) {   
+        req.session.email = req.body.email
+        req.session.noOfDrinks = 0
+        res.sendfile(path.join(__dirname, '/views/drink.html'))
+      }
+    }) 
+})
 
 app.post('/register', function(req, res) {
   var newUser = new User();
-  if (req.body.password !== req.body.passwordConfirm) res.status(404).send({ error: 'Passwords Dont match' })
-  newUser.local.email = req.body.email
-  newUser.local.password = newUser.generateHash(password)
-  newUser.local.height = req.body.height
-  newUser.local.weight = req.body.weight 
-  newUser.local.age = req.body.age
+  console.log(req.body.confirmPassword)
+  console.log(req.body)
+  if (req.body.password !== req.body.confirmPassword) res.status(404).send({ error: 'Passwords Dont match' })
+  newUser.email = req.body.email
+  newUser.password = newUser.generateHash(req.body.password)
+  newUser.height = req.body.height
+  newUser.weight = req.body.weight 
+  newUser.age = req.body.age
   newUser.save(function(err) {
     if (err)
       res.status(500).send({ error: 'Something went wrong on our end'})
+    else 
+      res.send("signed up")
   }) 
   req.session.email = req.body.email
+  req.session.noOfDrinks = 0
 })
 
 app.post('/drink', function (req, res) { 
-  if (!req.session.email) 
+  if (!req.session.email) { 
     res.status(401).send({ err: "no credentials"})   
+    console.log('no session')
+  } 
   var date = new Date().getTime()
   User.findOne({email : req.session.email}, function (err, user) { 
-    if (err) res.status(401).send({ err: "no credentials"})   
-    if (!user.nights) {
+    if (err) { 
+      res.status(401).send({ err: "no credentials"}) 
+    }
+    if (!user) {  res.status(401).send({ err: "no credentials"})  }
+    if (user.nights.length == 0) {
       var night = new Date()
+      console.log('taco') 
       user.nights.push({date:night, drinks:[{name: req.body.drinkId, timestamp: date}]}) 
     } else { 
-      if (user.nights.getTime() - date < 18000000) 
-        //push to the latest night 
-        user.nights[user.nights.length].drinks.push({name: req.body.drinkId, timestamp: date})
+      if ((user.nights[user.nights.length - 1]).date.getTime() - date < 18000000) {
+        user.nights[user.nights.length - 1].drinks.push({name: req.body.drinkId, timestamp: date})
+        req.session.noOfDrinks++ 
+        if (req.session.noOfDrinks === 7) // send push notifcation 
+        { 
+          req.session.noOfDrinks = 0 
+        } 
+      } 
       else {
         var night = new Date()
         user.nights.push({date:night, drinks:[{name: req.body.drinkId, timestamp: date}]}) 
       } 
-    } 
+    }
+    user.save(function(err) {
+      if (err)
+        res.status(500).send({ error: 'Something went wrong on our end'})
+      else 
+        res.send('drink recorded') 
+    }) 
   })      
 }) 
 
 app.get('/register', function (req, res) {
-   res.render('register', { })  
+   res.sendFile(path.join(__dirname, '/views/registration.html'))
 }) 
 
 server.listen(5000)

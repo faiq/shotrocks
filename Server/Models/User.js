@@ -4,21 +4,24 @@ var mongoose = require('mongoose')
   
 
 var userSchema = new Schema({
-  email: String,
+  email: { type: String, index:{unique: true}},
   password: String,
   height: Number, 
   weight: Number,
   age: Number,
-  nights: [night] 
-}
+  nights: [Night] 
+});
 
-var night = new Schema({
+userSchema.index({email: 1}, { unique: true });
+
+var Night = new Schema({
   date: Date,
-  drinks: [drink]
+  drinks: [Drinks]
 }) 
 
-var drink = new Schema({
-  name: String
+var Drinks = new Schema({
+  name: String,
+  timestamp: Number
 })
 
 userSchema.methods.generateHash = function(password) {
@@ -26,7 +29,7 @@ userSchema.methods.generateHash = function(password) {
 }
 
 userSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.local.password)
+  return bcrypt.compareSync(password, this.password)
 }
 
 module.exports = mongoose.model('User', userSchema)
