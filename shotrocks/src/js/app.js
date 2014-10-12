@@ -12,6 +12,9 @@ var Settings = require('settings');
 var Vibe = require('ui/vibe');
 // var Vector2 = require('vector2');
 
+// Settings.data('isLoggedIn', undefined);
+// Settings.data('drinks', 0);
+
 
 // if isLoggedIn is set, do nothing, else, set to false
 var isLoggedIn = Settings.data('isLoggedIn');
