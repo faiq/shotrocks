@@ -54,21 +54,19 @@ app.post('/signin', function (req, res) {
 
 app.post('/register', function(req, res) {
   var newUser = new User();
-  console.log(req.body.confirmPassword);
   console.log(req.body);
-  if (req.body.password !== req.body.confirmPassword) res.status(404).send({ error: 'Passwords Dont match' });
   newUser.email = req.body.email;
   newUser.password = newUser.generateHash(req.body.password);
   newUser.weight = req.body.weight;
   newUser.gender = req.body.gender;
+  req.session.email = req.body.email;
+  req.session.noOfDrinks = 0;
   newUser.save(function(err) {
     if (err)
       res.status(500).send({ error: 'Something went wrong on our end'});
     else 
       res.send("signed up");
   }) 
-  req.session.email = req.body.email;
-  req.session.noOfDrinks = 0;
 })
 
 app.post('/drink', function (req, res) { 
