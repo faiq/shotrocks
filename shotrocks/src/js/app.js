@@ -7,8 +7,8 @@
 var UI = require('ui');
 var ajax = require('ajax');
 var Settings = require('settings');
+var Vibe = require('ui/vibe');
 // var Vector2 = require('vector2');
-
 
 
 // if isLoggedIn is set, do nothing, else, set to false
@@ -140,12 +140,12 @@ var notify = function(title, subtitle, body) {
     main.show();
     loadingCard.hide();
 
-    console.log("test", Settings.data('recentDrinks'));
-
     main.on('select', function(e) {
         var recentDrinks = Settings.data('drinks') || 0;
         recentDrinks += 1;
         Settings.data('drinks', recentDrinks);
+
+        console.log(recentDrinks);
 
         var bac = BACAt(recentDrinks, (new Date()).getTime() - Settings.data('startTime'), Settings.data('gender'), Settings.data('weight'));
         var timeTilSober = tForBAC(bac);
@@ -153,7 +153,35 @@ var notify = function(title, subtitle, body) {
         main.hide();
 
 
-
+        var whatever = function() {
+            if (recentDrinks >= 7) {
+                Settings.data('drinks', 0);
+                setTimeout(function() {
+                    Vibe.vibrate('short');
+                    var ordrinCard = new UI.Card({
+                        title: "Want to Ordr.in some PIZZA?",
+                        body: '#HELLYEAH ->'
+                    });
+                    ordrinCard.show();
+                    card.hide();
+                    ordrinCard.on('click', 'select', function() {
+                        var confirmationCard = new UI.Card({
+                            title: "Ta Ta's Pizza is on its way!",
+                            body: ':P'
+                        });
+                        confirmationCard.show();
+                        ordrinCard.hide();
+                        setTimeout(function() {
+                            confirmationCard.hide();
+                        }, 2000);
+                    });
+                }, 3000);   
+            } else {
+                setTimeout(function() {
+                    card.hide();
+                }, 3000);
+            }
+        };
         ajax({
             url: 'http://google.com',
             method: 'POST',
@@ -161,15 +189,7 @@ var notify = function(title, subtitle, body) {
                 drinkId: e.item.title,
                 email: Settings.data('email')
             }
-        }, function() {
-            setTimeout(function() {
-                card.hide();
-            }, 4000);
-        }, function() {
-            setTimeout(function() {
-                card.hide();
-            }, 4000);
-        })
+        }, whatever, whatever);
         
     });
 
@@ -195,7 +215,7 @@ Settings.config({
         Settings.data('email', e.options.id || 1);
     } else {
         Settings.data('startTime', (new Date()).getTime());
-        Settings.data('recentDrinks', 0);
+        Settings.data('drinks', 0);
     }
     Settings.data('isLoggedIn', true);
 });
