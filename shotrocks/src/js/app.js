@@ -18,7 +18,6 @@ var isLoggedIn = Settings.data('isLoggedIn');
 if (isLoggedIn === null || isLoggedIn === undefined) {
     isLoggedIn = false;
     Settings.data('isLoggedIn', false);
-
 }
 
 var FEMALE_WATER_WEIGHT = 0.49;
