@@ -3,11 +3,11 @@ body {
 	text-align: center;
 	background-color: #ff0048;
 	color: #ffffff;
-    height: 600px;
+    height: 500px;
 }
 
 .container {
-    height: 600px;
+    height: 500px;
 }
 
 h1 {
@@ -16,12 +16,12 @@ h1 {
 }
 
 .slider-cont, #slider {
-    height: 400px;
+    height: 350px;
 }
 
 .row.level {
     margin-top: 20px;
-    margin-bottom: 130px;
+    margin-bottom: 125px;
 }
 
 h2 {
