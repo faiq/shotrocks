@@ -17,38 +17,28 @@
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 
-		<script>
-		  window.onload = function () {
-				document.getElementById("buzzed").onclick = function() {
-					alert("buzzed") 
-				}
-				document.getElementById("drunk").onclick = function() {
-					alert("drunk")
-				}
-				document.getElementById("trashed").onclick = function() {
-					alert("trashed")
-				}
-			}
-		  </script>
-
+   <script>
+    $(function() {
+      $( "#slider" ).slider({
+        value:100,
+        min: 0,
+        max: 500,
+        step: 50,
+        slide: function( event, ui ) {
+          $( "#amount" ).val( "$" + ui.value );
+        }
+      });
+      $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
+    });
+  </script>
 	</head>
 
 	<body>
 		<div class="container">
 			<h1>ShotRocks</h1>
 			<form role="form">
-				<div class="form-group">
-					<label for="time">When do you want to be sober?</label>
-					<input type="text" name="time" class="form-control" placeholder="hh:mm PM/AM" data-default-time="false">
-				</div>
-				
-				<div class="form-group">
-					<label for="amount">How crunked do you want to get tonight?</label>
-					<button type="button" id="buzzed" class="btn btn-default btn-lg">Buzzed</button>
-					<button type="button" id="drunk" class="btn btn-default btn-lg">Drunk</button>
-					<button type="button" id="trashed" class="btn btn-default btn-lg">Trashed</button>
-				</div>
-			</form>	
+		    <div id="slider"></div>	
+      </form>	
 		</div>
 	</body>
 </html>

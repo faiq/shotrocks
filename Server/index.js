@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
       if (err) {  res.status(401).send({ err: "no credentials"})   
         console.log(err) 
       } 
-      res.sendFile(path.join(__dirname, '/views/drink.html'))
+      res.sendFile(path.join(__dirname, '/views/main.html'))
     }) 
   } 
   res.sendFile(path.join(__dirname, '/views/login.html'))
@@ -46,7 +46,7 @@ app.post('/signin', function (req, res) {
       if (user.validPassword(req.body.password)) {   
         req.session.email = req.body.email
         req.session.noOfDrinks = 0
-        res.sendfile(path.join(__dirname, '/views/drink.html'))
+        res.sendfile(path.join(__dirname, '/views/main.html'))
       }
     }) 
 })
