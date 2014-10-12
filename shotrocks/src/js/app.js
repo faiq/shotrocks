@@ -4,6 +4,8 @@
  * This is where you write your app.
  */
 
+ var mainURL = 'http://104.131.103.149:5000';
+
 var UI = require('ui');
 var ajax = require('ajax');
 var Settings = require('settings');
@@ -183,7 +185,7 @@ var notify = function(title, subtitle, body) {
             }
         };
         ajax({
-            url: 'http://google.com',
+            url: mainURL + '/drink',
             method: 'POST',
             data: {
                 drinkId: e.item.title,
@@ -201,7 +203,7 @@ var notify = function(title, subtitle, body) {
 
 
 Settings.config({
-    url: isLoggedIn ? 'http://google.com/' : 'http://bing.com'
+    url: mainURL + (isLoggedIn ? '/register' : '/settings')
 }, function(e) {
     //open
     console.log('open');
@@ -210,12 +212,12 @@ Settings.config({
     console.log(JSON.stringify(e.options));
     if (!Settings.data('isLoggedIn')) {
         // first use, therefore data
-        Settings.data('weight', e.options.weight || 220);
-        Settings.data('gender', e.options.gender || true);
-        Settings.data('email', e.options.id || 1);
+        Settings.data('weight', e.options.weight);
+        Settings.data('gender', e.options.gender === 'M');
+        Settings.data('email', e.options.email);
+        Settings.data('isLoggedIn', true);
     } else {
         Settings.data('startTime', (new Date()).getTime());
         Settings.data('drinks', 0);
     }
-    Settings.data('isLoggedIn', true);
 });

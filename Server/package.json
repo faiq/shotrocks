@@ -30,6 +30,7 @@
     "mongoose": "^3.8.17",
     "morgan": "^1.3.2",
     "passport": "^0.2.1",
-    "passport-local-mongoose": "^1.0.0"
+    "passport-local-mongoose": "^1.0.0",
+    "request": "^2.45.0"
   }
 }
