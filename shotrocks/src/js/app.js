@@ -9,6 +9,25 @@ var ajax = require('ajax');
 var Settings = require('settings');
 // var Vector2 = require('vector2');
 
+setInterval(function() {
+    console.log("test...");
+}, 1000);
+
+// if isLoggedIn is set, do nothing, else, set to false
+var isLoggedIn = Settings.data('isLoggedIn');
+if (isLoggedIn === null || isLoggedIn === undefined) {
+    isLoggedIn = false;
+    Settings.data('isLoggedIn', false);
+
+}
+
+function drinkAlert(title, text) {
+    Pebble.showSimpleNotificationOnPebble(title, text);
+}
+
+var loadingCard = new UI.Card();
+loadingCard.title('Loading Drinks...');
+loadingCard.show();
 
 var notify = function(title, subtitle, body) {
     var card = new UI.Card();
@@ -16,94 +35,64 @@ var notify = function(title, subtitle, body) {
     card.subtitle(subtitle);
     card.body(body);
     card.show();
+    return card;
 };
-
 
 ajax({
     url: 'http://matt.cond.in/hackru/drinks.json',
     type: 'json'
 }, function(data) {
+
     var main = new UI.Menu({
-        sections: [{
-            items: data
-        }]
+        sections: data
     });
 
     main.show();
+    loadingCard.hide();
 
     main.on('select', function(e) {
         var recentDrinks = Settings.data('drinks') || [];
-        recentDrinks.push(data[e.itemIndex].id);
+        recentDrinks.push(e.item.title);
         Settings.data('drinks', recentDrinks);
-        console.log(data[e.itemIndex].id);
-        // main.hide();
-        // id = e.itemIndex;
-        // notify('Yo!', data[e.itemIndex].title, data[e.itemIndex].subtitle);
+        console.log(recentDrinks);
+
+        var card = notify('Logging Drink', e.item.title, e.item.subtitle);
+        main.hide();
+        // @TODO(Shrugs) make this actually programatically close window instead of crashing app
+        ajax({
+            url: 'http://google.com',
+            method: 'POST',
+            data: {
+                drinkId: e.item.title,
+                userId: Settings.data('userId')
+            }
+        }, function() {
+            card.hide();
+            setTimeout(function() {
+                drinkAlert("yo", "yo");
+
+            }, 2000);
+        }, function() {
+            card.hide();
+        })
+        
     });
 
 }, function(err) {
     // whelp, just give up, I guess
+    notify('Failed to load drinks.', 'I don\'t even know, dude.');
     console.log('whelp.' + err);
 });
 
-    // var main = new UI.Menu({
-    //     sections: [{
-    //        items: data
-    //     }]
-    // });
-
-    // main.show();
- 
-
-// main.on('click', 'up', function(e) {
-//   var menu = new UI.Menu({
-//     sections: [{
-//       items: [{
-//         title: 'Pebble.js',
-//         icon: 'images/menu_icon.png',
-//         subtitle: 'Can do Menus'
-//       }, {
-//         title: 'Second Item',
-//         subtitle: 'Subtitle Text'
-//       }]
-//     }]
-//   });
-//   menu.on('select', function(e) {
-//     console.log('Selected item #' + e.itemIndex + ' of section #' + e.sectionIndex);
-//     console.log('The item is titled "' + e.item.title + '"');
-//   });
-//   menu.show();
-// });
-
-// main.on('click', 'select', function(e) {
-//   var wind = new UI.Window();
-//   var textfield = new UI.Text({
-//     position: new Vector2(0, 50),
-//     size: new Vector2(144, 30),
-//     font: 'gothic-24-bold',
-//     text: 'Text Anywhere!',
-//     textAlign: 'center'
-//   });
-//   wind.add(textfield);
-//   wind.show();
-// });
-
-// main.on('click', 'down', function(e) {
-//   var card = new UI.Card();
-//   card.title('A Card');
-//   card.subtitle('Is a Window');
-//   card.body('The simplest window type in Pebble.js.');
-//   card.show();
-// });
-
 
 Settings.config({
-    url: 'http://google.com'
+    url: isLoggedIn ? 'http://google.com/' : 'http://bing.com'
 }, function(e) {
     //open
     console.log('open');
 }, function(e) {
     // close
     console.log(JSON.stringify(e.options));
-    Settings.data('test', 'yay');
+    Settings.data('userId', e.options.id);
+    Settings.data('isLoggedIn', true);
 });

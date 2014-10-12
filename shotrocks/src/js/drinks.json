@@ -1,0 +1,69 @@
+[
+    {
+        "title": "Beers",
+        "items": [
+            {
+                "title": "Normal Beer",
+                "subtitle": "5"
+            },
+            {
+                "title": "Heavy Beer",
+                "subtitle": "9"
+            }
+        ]
+    },
+    {
+        "title": "Hard Liquors",
+        "items": [
+            {
+                "title": "Vodka (Shot)",
+                "subtitle": "40"
+            },
+            {
+                "title": "Tequila (Shot)",
+                "subtitle": "40"
+            },
+            {
+                "title": "Whiskey (Shot)",
+                "subtitle": "43"
+            },
+            {
+                "title": "Gin (Shot)",
+                "subtitle": "40"
+            },
+            {
+                "title": "Rum (Shot)",
+                "subtitle": "41"
+            }
+        ]
+    },
+    {
+        "title": "Wines",
+        "items": [
+            {
+                "title": "White Wine (Glass)",
+                "subtitle": "10"
+            },
+            {
+                "title": "Red Wine (Glass)",
+                "subtitle": "15"
+            },
+            {
+                "title": "Pinot Grito (Glass)",
+                "subtitle": "13"
+            },
+            {
+                "title": "Sake (Vase)",
+                "subtitle": "16"
+            },
+            {
+                "title": "Chardonnay (Glass)",
+                "subtitle": "14"
+            },
+            {
+                "title": "Port (Glass)",
+                "subtitle": "19"
+            }
+        ]
+    }
+]
