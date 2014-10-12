@@ -14,11 +14,8 @@
 
 		<script>
 			window.onload = function () {
-				document.getElementById("signIn").onclick = function() {
-					alert("signin") 
-				}
 				document.getElementById("register").onclick = function() {
-					alert("register")
+						
 				}
 			}
 		</script>
@@ -26,8 +23,8 @@
 
 	<body>
 		<div class="container">
-			<h1>ShotRocks</h1>
-			<p class="lead">Welcome to ShotRocks, a Pebble app for managing your alcohol intake.</p>
+			<h2>Registration</h2>
+			<p class="lead">All fields are required.</p>
 
 			<form role="form">
 				<div class="form-group">
@@ -38,15 +35,21 @@
 					<label for="inputPassword">Password</label>
 					<input type="password" class="form-control" id="inputPassword" placeholder="Password">
 				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox">Remember me
-					</label>
+				<div class="form-group">
+					<label for="inputAge">Age</label>
+					<input class="form-control" id="inputAge" placeholder="Age">
+				</div>
+				<div class="form-group">
+					<label for="inputWeight">Weight (in lbs)</label>
+					<input class="form-control" id="inputWeight" placeholder="Weight">
+				</div>
+				<div class="form-group">
+					<label for="inputHeight">Height (in inches)</label>
+					<input class="form-control" id="inputHeight" placeholder="Height">
 				</div>
 			</form>
-			<button type="button" id="signIn" class="btn btn-default btn-lg">Sign in</button>
 			
-			<a href="registration.html">Register</a>
+			<button type="button" id="register" class="btn btn-default btn-lg">Register</button>
 		</div>
 	</body>
 </html>

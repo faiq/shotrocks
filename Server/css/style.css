@@ -10,7 +10,20 @@ h1 {
 	font-size: 72px;
 }
 
+h2 {
+	font-size: 54px;
+}
+
 button {
 	margin-left: 20px;
 }
 
+a {
+	padding: 15px;
+	font-size: 16px;
+	color: #dddddd;
+}
+
+a:hover {
+	color: #dddddd;
+}
