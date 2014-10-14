@@ -73,55 +73,55 @@ var noOfDrinks = 0;
 
 app.post('/drink', function (req, res) { 
 
-    noOfDrinks++ 
-    if (noOfDrinks >= 7) {
-        // send push notification
-        setTimeout(function() {
-            notify('You should start drinking water!');
-        }, 6000);
-        noOfDrinks = 0 
-    } 
-    res.status(200).send("k");
+//    noOfDrinks++ 
+//    if (noOfDrinks >= 7) {
+//        // send push notification
+//        setTimeout(function() {
+//            notify('You should start drinking water!');
+//        }, 6000);
+//        noOfDrinks = 0 
+//    } 
+//    res.status(200).send("k");
 
-  // if (!req.session.email) { 
-  //   res.status(401).send({ err: "no credentials"})   
-  //   console.log('no session')
-  //   return;
-  // } 
-  // var date = new Date().getTime()
-  // User.findOne({email : req.session.email}, function (err, user) { 
-  //   if (err) { 
-  //     res.status(401).send({ err: "no credentials"}) 
-  //   }
-  //   if (!user) {  res.status(401).send({ err: "no credentials"}); return;  }
-  //   if (user.nights.length == 0) {
-  //     var night = new Date()
-  //     console.log('taco') 
-  //     user.nights.push({date:night, drinks:[{name: req.body.drinkId, timestamp: date}]}) 
-  //   } else { 
-  //     if ((user.nights[user.nights.length - 1]).date.getTime() - date < 18000000) {
-  //       user.nights[user.nights.length - 1].drinks.push({name: req.body.drinkId, timestamp: date})
-  //       req.session.noOfDrinks++ 
-  //       if (req.session.noOfDrinks === 7) {
-  //           // send push notification
-  //           setTimeout(function() {
-  //               notify('You should start drinking water!');
-  //           }, 6000);
-  //           req.session.noOfDrinks = 0 
-  //       } 
-  //     } 
-  //     else {
-  //       var night = new Date()
-  //       user.nights.push({date:night, drinks:[{name: req.body.drinkId, timestamp: date}]}) 
-  //     } 
-  //   }
-  //   user.save(function(err) {
-  //     if (err)
-  //       res.status(500).send({ error: 'Something went wrong on our end'})
-  //     else 
-  //       res.send('drink recorded') 
-  //   }) 
-  // })      
+  if (!req.session.email) { 
+    res.status(401).send({ err: "no credentials"})   
+    console.log('no session')
+    return;
+  } 
+  var date = new Date().getTime()
+  User.findOne({email : req.session.email}, function (err, user) { 
+    if (err) { 
+      res.status(401).send({ err: "no credentials"}) 
+    }
+    if (!user) {  res.status(401).send({ err: "no credentials"}); return;  }
+    if (user.nights.length == 0) {
+      var night = new Date()
+      console.log('taco') 
+      user.nights.push({date:night, drinks:[{name: req.body.drinkId, timestamp: date}]}) 
+    } else { 
+      if ((user.nights[user.nights.length - 1]).date.getTime() - date < 18000000) {
+        user.nights[user.nights.length - 1].drinks.push({name: req.body.drinkId, timestamp: date})
+        req.session.noOfDrinks++ 
+        if (req.session.noOfDrinks === 7) {
+            // send push notification
+            setTimeout(function() {
+                notify('You should start drinking water!');
+            }, 6000);
+            req.session.noOfDrinks = 0 
+        } 
+      } 
+      else {
+        var night = new Date()
+        user.nights.push({date:night, drinks:[{name: req.body.drinkId, timestamp: date}]}) 
+      } 
+    }
+    user.save(function(err) {
+      if (err)
+        res.status(500).send({ error: 'Something went wrong on our end'})
+      else 
+        res.send('drink recorded') 
+    }) 
+  })      
 }) 
 
 app.get('/register', function (req, res) {
